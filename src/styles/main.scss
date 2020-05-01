@@ -1,43 +1,75 @@
 $day-size: 100px;
-$day-margins: 2px;
+$day-margins: 1px;
+$day-size-full: $day-size + $day-margins;
+$weekdays: (
+  "mon": 0,
+  "tue": 1,
+  "wed": 2,
+  "thu": 3,
+  "fri": 4,
+  "sat": 5,
+  "sun": 6
+);
+$ends-of-month: (
+  "28": 28 + 1,
+  "29": 29 + 1,
+  "30": 30 + 1,
+  "31": 31 + 1
+);
 
 body {
   margin: 0;
 }
 
 .calendar {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
+  width: calc(7 * #{$day-size-full});
+  margin: 0 auto;
 }
 
-.calendar-29 > *:nth-child(n+30) {
-  display: none;
-}
-
-.calendar-30 > *:nth-child(n+31) {
-  display: none;
-}
-
-.calendar > div {
+.calendar > * {
+  box-sizing: border-box;
+  margin: $day-margins $day-margins 0 0;
+  flex-shrink: 0;
   width: $day-size;
   height: $day-size;
-  border: 1px solid #000;
-  margin: $day-margins;
   position: relative;
+  border: 1px solid #000;
+  transition: ease 0.5s;
+}
+
+.calendar > *:hover {
+  background-color: #f5c2cb;
+  transform: translateY(-20px);
+  cursor: url("../images/pointer.png"), pointer;
+}
+
+.calendar > *::before {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+@each $day, $num in $ends-of-month {
+  .calendar-#{$day} > *:nth-child(n + #{$num}) {
+    display: none;
+  }
+}
+
+@each $day, $num in $weekdays {
+  .calendar-#{$day} > *:first-child {
+    margin-left: calc(#{$day-size-full} * #{$num});
+  }
 }
 
 @for $i from 1 through 31 {
   .calendar > *:nth-child(1n+#{$i})::before {
     content: "#{$i}";
-    font-size: $day-size/2;
-    line-height: 1;
-
-    display: block;
-    position: absolute;
-    height: $day-size/2;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
   }
 }
