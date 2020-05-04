@@ -56,10 +56,11 @@ body {
   transform: translate(-50%,-50%);
 }
 
-@each $day, $num in $ends-of-month {
-  .calendar-#{$day} > *:nth-child(n + #{$num}) {
-    display: none;
-  }
+.calendar-28 > *:nth-child(n + 29),
+.calendar-29 > *:nth-child(n + 30),
+.calendar-30 > *:nth-child(n + 31),
+.calendar-31 > *:nth-child(n + 32) {
+  display: none;
 }
 
 @each $day, $num in $weekdays {
